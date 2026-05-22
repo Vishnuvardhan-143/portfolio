@@ -51,10 +51,15 @@ export default function Hero() {
               Available for collaborations · {currentYear}
             </div>
             <span className="hidden sm:inline opacity-30">/</span>
-            <div className="flex items-center gap-1.5">
+            <a 
+              href="https://maps.google.com/?q=Proddatur,Kadapa,Andhra+Pradesh,India"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 hover:text-terracotta dark:hover:text-orange-500 transition-colors cursor-pointer"
+            >
               <MapPin size={10} className="text-terracotta dark:text-orange-500" />
               Proddatur, AP, India
-            </div>
+            </a>
             <span className="hidden sm:inline opacity-30">/</span>
             <div className="text-zinc-900 dark:text-white bg-zinc-900/5 dark:bg-white/5 px-2 py-0.5 rounded border border-zinc-900/10 dark:border-white/10">
               {time} IST

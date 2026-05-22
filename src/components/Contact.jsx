@@ -116,8 +116,11 @@ export default function Contact() {
               </a>
 
               {/* Location */}
-              <div 
-                className="glass-card p-4 flex items-center gap-4"
+              <a 
+                href="https://maps.google.com/?q=Proddatur,Kadapa,Andhra+Pradesh,India"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass-card p-4 flex items-center gap-4 hover:-translate-y-0.5"
               >
                 <div className="p-2.5 rounded-xl bg-zinc-900/5 dark:bg-white/5 text-purple-500">
                   <MapPin size={16} />
@@ -126,7 +129,7 @@ export default function Contact() {
                   <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 block">Base Location</span>
                   <span className="text-xs font-bold text-zinc-800 dark:text-[#f5f1e8]">{portfolioData.personalInfo.location}</span>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
 
