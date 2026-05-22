@@ -1,16 +1,58 @@
-# React + Vite
+# A. V. Vishnuvardhan Reddy - Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance, interactive developer portfolio showcasing expertise in Distributed Systems, Big Data Engineering, and Full-Stack Development. Built with modern web technologies, focusing on premium aesthetics, seamless micro-interactions, and robust performance.
 
-Currently, two official plugins are available:
+![Live on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌟 Key Features
 
-## React Compiler
+- **Premium UI/UX Design**: Highly polished interface utilizing Glassmorphism, smooth scrolling, and dynamic micro-animations.
+- **Adaptive Theming**: Flawless Light & Dark mode support ensuring high-contrast readability across all environments.
+- **Interactive AI Chatbot Agent**: A contextual, intent-driven simulated assistant designed to answer questions about skills, projects, and background.
+- **Responsive Fluid Layouts**: Built with Tailwind CSS v4 to guarantee perfect rendering across desktop, tablet, and mobile breakpoints.
+- **Serverless Form Integration**: Fully functional, backend-free contact interface wired up securely to route messages directly to email.
+- **Global Edge Delivery**: Optimized and configured for lightning-fast deployments on the Vercel Edge Network.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Technology Stack
 
-## Expanding the ESLint configuration
+- **Core**: React.js 18, Vite
+- **Styling**: Tailwind CSS v4, Custom CSS Custom Properties
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Deployment**: Vercel
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Local Development Setup
+
+To run this project locally, follow these steps:
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Vishnuvardhan-143/my-portfolio.git
+   cd my-portfolio
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+   The application will be available at `http://localhost:5173`
+
+4. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+## 🔒 Security Notice
+
+This repository contains front-end code only. All sensitive keys (like API routing or contact form access tokens) are intentionally excluded from this document and managed securely within the deployment environment and frontend build process.
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](LICENSE).
