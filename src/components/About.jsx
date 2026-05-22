@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Award, GraduationCap, Briefcase, FileText, ChevronRight } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 
-export default function About() {
+export default function About({ onViewResume }) {
   const cards = [
     {
       icon: <GraduationCap className="text-terracotta dark:text-orange-500" size={24} />,
@@ -77,16 +77,22 @@ export default function About() {
             </div>
 
             {/* Resume Button */}
-            <div className="pt-4">
+            <div className="pt-4 flex flex-wrap gap-4">
+              <button 
+                onClick={onViewResume}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal hover:bg-terracotta dark:hover:bg-orange-500 dark:hover:text-charcoal text-xs font-black uppercase tracking-widest hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer shadow-md"
+              >
+                <FileText size={16} />
+                Show Resume
+                <ChevronRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+              </button>
               <a 
                 href={portfolioData.personalInfo.linkedin} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-zinc-900/5 dark:bg-white/5 border border-zinc-900/10 dark:border-white/10 hover:border-terracotta/40 dark:hover:border-orange-500/40 text-zinc-800 dark:text-[#f5f1e8] text-xs font-black uppercase tracking-widest hover:-translate-y-0.5 transition-all duration-300 group"
               >
-                <FileText size={16} />
                 Connect on LinkedIn
-                <ChevronRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
               </a>
             </div>
           </motion.div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Menu, X, ArrowUpRight } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 
-export default function Header({ theme, toggleTheme }) {
+export default function Header({ theme, toggleTheme, onViewResume }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -81,6 +81,12 @@ export default function Header({ theme, toggleTheme }) {
               </button>
             </div>
             
+            <button
+              onClick={onViewResume}
+              className="text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal hover:bg-terracotta dark:hover:bg-orange-500 dark:hover:text-charcoal transition-all duration-300 flex items-center gap-1.5 cursor-pointer shadow-sm"
+            >
+              Resume
+            </button>
             <a 
               href="#contact" 
               className="text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full border border-terracotta/40 dark:border-orange-500/40 text-terracotta dark:text-orange-500 hover:bg-terracotta hover:text-white dark:hover:bg-orange-500 dark:hover:text-zinc-950 transition-all duration-300 flex items-center gap-1.5"
@@ -140,6 +146,17 @@ export default function Header({ theme, toggleTheme }) {
                     </a>
                   </li>
                 ))}
+                <li className="animate-[fade-in-up_0.3s_ease_both]" style={{ animationDelay: `${navLinks.length * 0.05}s` }}>
+                  <button 
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onViewResume();
+                    }}
+                    className="text-left w-full hover:text-terracotta dark:hover:text-orange-500 transition-colors font-bold text-xl tracking-tight cursor-pointer"
+                  >
+                    Resume
+                  </button>
+                </li>
               </ul>
             </nav>
 

@@ -16,7 +16,7 @@ const letterAnimation = {
 
 const marqueeWords = ["Design", "Develop", "Discover", "Deploy", "Ship"];
 
-export default function Hero() {
+export default function Hero({ onViewResume }) {
   const [time, setTime] = useState('');
 
   useEffect(() => {
@@ -123,6 +123,24 @@ export default function Hero() {
               <p className="text-zinc-600 dark:text-zinc-400 font-sans text-sm md:text-base font-medium leading-relaxed max-w-lg mt-2">
                 Building <span className="text-zinc-900 dark:text-[#f5f1e8] font-bold italic font-heading underline decoration-[1.5px] decoration-terracotta underline-offset-4">high-performance systems</span> and big data engines — engineered with precision, designed for scale, shipped with care.
               </p>
+            </Reveal>
+
+            {/* Action Buttons */}
+            <Reveal delay={0.85}>
+              <div className="flex flex-wrap gap-4 mt-2">
+                <button
+                  onClick={onViewResume}
+                  className="px-6 py-3.5 rounded-2xl bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal hover:bg-terracotta dark:hover:bg-orange-500 dark:hover:text-charcoal transition-all duration-300 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer shadow-lg hover:-translate-y-0.5"
+                >
+                  Show Resume
+                </button>
+                <a
+                  href="#contact"
+                  className="px-6 py-3.5 rounded-2xl bg-zinc-900/5 dark:bg-white/5 border border-zinc-900/10 dark:border-white/10 hover:border-terracotta/40 dark:hover:border-orange-500/40 text-zinc-800 dark:text-[#f5f1e8] text-[10px] font-black uppercase tracking-widest transition-all duration-300 flex items-center gap-1.5 hover:-translate-y-0.5 animate-pulse"
+                >
+                  Get in touch
+                </a>
+              </div>
             </Reveal>
 
             {/* Statistics Row */}
