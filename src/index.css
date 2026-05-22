@@ -1,0 +1,183 @@
+/* Import Premium Typography */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+@import "tailwindcss";
+
+/* Enable class-based dark mode in Tailwind CSS v4 */
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-heading: "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+  --color-beige: #f5f1e8;
+  --color-charcoal: #0c0c0c;
+  --color-terracotta: #c2410c;
+  --color-emerald-accent: #3a9476;
+}
+
+/* Custom styles and variables */
+:root {
+  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+  --font-heading: "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
+  --bg-color: #f5f1e8;
+  --text-color: #0f172a; /* slate-900 */
+  --border-color: rgba(15, 23, 42, 0.08);
+  --accent-color: #c2410c;
+  --secondary-color: #3a9476;
+  --marquee-text-color: rgba(15, 23, 42, 0.6); /* Highly visible solid dark color for light theme */
+}
+
+.dark {
+  --bg-color: #0c0c0c;
+  --text-color: #f5f1e8;
+  --border-color: rgba(245, 241, 232, 0.08);
+  --accent-color: #ea580c;
+  --secondary-color: #52c49a;
+  --marquee-text-color: rgba(245, 241, 232, 0.6); /* Highly visible solid light color for dark theme */
+}
+
+.marquee-text {
+  color: var(--marquee-text-color);
+  transition: color 0.5s ease;
+}
+
+
+/* Bulletproof Theme Utilities with Premium Fluid Transitions */
+.bg-theme {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.text-theme {
+  color: var(--text-color);
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.border-theme {
+  border-color: var(--border-color);
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark .glass-card {
+  background: rgba(23, 23, 23, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-card:hover {
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.08);
+}
+
+.dark .glass-card:hover {
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4);
+}
+
+/* Milestone stacking cards - must be opaque to visually cover cards beneath */
+.milestone-card {
+  background: rgba(245, 241, 232, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  will-change: transform;
+}
+
+.dark .milestone-card {
+  background: rgba(23, 23, 23, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Background Gridlines Pattern */
+.bg-gridlines {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+}
+
+/* Dynamic Radial Glow Overlays */
+.ambient-glow-light {
+  background: radial-gradient(ellipse at 50% 50%, rgba(58, 148, 118, 0.04) 0%, rgba(245, 241, 232, 0) 70%);
+}
+
+.dark .ambient-glow-dark {
+  background: radial-gradient(circle at 50% 50%, rgba(234, 88, 12, 0.035) 0%, rgba(12, 12, 12, 0) 70%);
+}
+
+/* Infinite Marquee */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.15);
+  border-radius: 9px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(245, 241, 232, 0.15);
+}
+
+/* Subtle micro-interactions */
+.pulse-badge {
+  position: relative;
+}
+.pulse-badge::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  background: var(--secondary-color);
+  opacity: 0.4;
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
