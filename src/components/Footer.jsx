@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { portfolioData } from '../data/portfolioData';
 
 export default function Footer() {
@@ -65,4 +65,3 @@ export default function Footer() {
     </footer>
   );
 }
-

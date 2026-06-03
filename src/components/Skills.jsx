@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Cpu, Terminal, Database, ShieldAlert, Award, Layers } from 'lucide-react';
-import { portfolioData } from '../data/portfolioData';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 // Orbiting Badge Component with scroll-driven expansion hooks
 function OrbitBadge({ item, idx, totalItems, radius, progress }) {
@@ -44,7 +42,6 @@ function OrbitBadge({ item, idx, totalItems, radius, progress }) {
 }
 
 export default function Skills() {
-  const [activeCategory, setActiveCategory] = useState('languages');
   const [radius, setRadius] = useState(220);
   const containerRef = useRef(null);
 
@@ -75,14 +72,6 @@ export default function Skills() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const categories = [
-    { id: 'languages', name: 'Languages', icon: <Terminal size={12} /> },
-    { id: 'frameworks', name: 'Frameworks', icon: <Cpu size={12} /> },
-    { id: 'databases', name: 'Databases', icon: <Database size={12} /> },
-    { id: 'devops', name: 'DevOps', icon: <ShieldAlert size={12} /> },
-    { id: 'fundamentals', name: 'Fundamentals', icon: <Award size={12} /> }
-  ];
-
   const marqueeSkills = [
     "Spring Boot", "Docker Compose", "PySpark", "ReactJS", "C++", 
     "Java", "Databricks", "Saga Pattern", "Data Structures", "Algorithms", 
@@ -91,16 +80,16 @@ export default function Skills() {
 
   // Tech Orbit Items
   const orbitItems = [
-    { name: 'Spring Boot', icon: '🍃', color: 'border-emerald-500/30 text-emerald-500 bg-emerald-500/10' },
-    { name: 'Python', icon: '🐍', color: 'border-blue-500/30 text-blue-500 bg-blue-500/10' },
-    { name: 'Java', icon: '☕', color: 'border-red-500/30 text-red-500 bg-red-500/10' },
-    { name: 'PySpark', icon: '⚡', color: 'border-orange-500/30 text-orange-500 bg-orange-500/10' },
-    { name: 'React', icon: '⚛️', color: 'border-cyan-400/30 text-cyan-400 bg-cyan-400/10' },
-    { name: 'Docker', icon: '🐳', color: 'border-sky-400/30 text-sky-400 bg-sky-400/10' },
-    { name: 'PostgreSQL', icon: '🐘', color: 'border-indigo-400/30 text-indigo-400 bg-indigo-400/10' },
-    { name: 'MongoDB', icon: '🍃', color: 'border-emerald-600/30 text-emerald-600 bg-emerald-600/10' },
-    { name: 'Git', icon: '⚙️', color: 'border-orange-600/30 text-orange-600 bg-orange-600/10' },
-    { name: 'TypeScript', icon: 'TS', color: 'border-blue-600/30 text-blue-400 bg-blue-600/10 font-bold text-xs' }
+    { name: 'Spring Boot', icon: 'SB', color: 'border-cyan-300/30 text-cyan-100 bg-cyan-300/10 font-bold text-xs' },
+    { name: 'Python', icon: 'PY', color: 'border-sky-300/30 text-sky-100 bg-sky-300/10 font-bold text-xs' },
+    { name: 'Java', icon: 'JV', color: 'border-amber-300/30 text-amber-100 bg-amber-300/10 font-bold text-xs' },
+    { name: 'PySpark', icon: 'PS', color: 'border-orange-300/30 text-orange-100 bg-orange-300/10 font-bold text-xs' },
+    { name: 'React', icon: 'RX', color: 'border-cyan-400/30 text-cyan-100 bg-cyan-400/10 font-bold text-xs' },
+    { name: 'Docker', icon: 'DK', color: 'border-blue-300/30 text-blue-100 bg-blue-300/10 font-bold text-xs' },
+    { name: 'PostgreSQL', icon: 'PG', color: 'border-indigo-300/30 text-indigo-100 bg-indigo-300/10 font-bold text-xs' },
+    { name: 'MongoDB', icon: 'MG', color: 'border-emerald-300/30 text-emerald-100 bg-emerald-300/10 font-bold text-xs' },
+    { name: 'Git', icon: 'GT', color: 'border-rose-300/30 text-rose-100 bg-rose-300/10 font-bold text-xs' },
+    { name: 'TypeScript', icon: 'TS', color: 'border-blue-400/30 text-blue-100 bg-blue-400/10 font-bold text-xs' }
   ];
 
   return (
@@ -118,7 +107,7 @@ export default function Skills() {
               <span className="marquee-text font-heading">
                 {skill}
               </span>
-              <span className="text-terracotta dark:text-orange-500 opacity-60">•</span>
+              <span className="text-terracotta dark:text-orange-500 opacity-60">*</span>
             </React.Fragment>
           ))}
           {/* Second loop for seamless wrapping */}
@@ -127,7 +116,7 @@ export default function Skills() {
               <span className="marquee-text font-heading">
                 {skill}
               </span>
-              <span className="text-terracotta dark:text-orange-500 opacity-60">•</span>
+              <span className="text-terracotta dark:text-orange-500 opacity-60">*</span>
             </React.Fragment>
           ))}
         </div>

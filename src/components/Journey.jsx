@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Milestone, MapPin, Calendar, CheckCircle2 } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2 } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 
 export default function Journey() {
@@ -91,7 +90,7 @@ export default function Journey() {
                       </div>
 
                       {/* Header */}
-                      <h3 className="font-heading text-lg font-bold uppercase tracking-tight text-zinc-900 dark:text-white">
+                      <h3 className="text-xl font-black uppercase tracking-wider text-zinc-900 dark:text-white mb-1">
                         {item.role}
                       </h3>
                       

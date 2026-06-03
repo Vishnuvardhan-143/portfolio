@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Bot, User, Sparkles } from 'lucide-react';
-import { portfolioData } from '../data/portfolioData';
 
 // Highly optimized, rich dataset of conversational intents
 const intents = [
@@ -120,7 +119,7 @@ const getBotResponse = (query) => {
 
     // Check individual keyword matches (Medium weight)
     intent.keywords.forEach(keyword => {
-      const escaped = keyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const escaped = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
       const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
       const matches = q.match(regex);
       if (matches) {
@@ -348,4 +347,3 @@ export default function Chatbot() {
     </>
   );
 }
-

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Award } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
@@ -50,7 +50,7 @@ export default function Achievements() {
   );
 }
 
-function AchievementCard({ ach, idx, total }) {
+function AchievementCard({ ach, idx }) {
   const cardRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: cardRef,
@@ -75,7 +75,7 @@ function AchievementCard({ ach, idx, total }) {
       className="milestone-card p-6 md:p-8 flex justify-between items-center border border-zinc-900/5 dark:border-white/5 hover:border-emerald-accent/20 dark:hover:border-[#52c49a]/20 hover:shadow-lg dark:hover:shadow-black/30 group transition-shadow duration-300 rounded-3xl"
     >
       <div className="flex-1 pr-6">
-        <h4 className="font-heading text-lg font-bold text-zinc-900 dark:text-white uppercase tracking-tight">
+        <h4 className="text-lg font-black text-zinc-900 dark:text-white uppercase tracking-wider">
           {ach.title}
         </h4>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-2">

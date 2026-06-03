@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, Code } from 'lucide-react';
-import { Github, Linkedin } from './Icons';
+import { useState } from 'react';
+import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 
 export default function Contact() {

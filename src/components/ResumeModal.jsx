@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { X, Download, Printer, ExternalLink, Mail, Phone, MapPin, Award } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 import { Github, Linkedin } from './Icons';
@@ -84,6 +84,7 @@ export default function ResumeModal({ isOpen, onClose }) {
             {/* Close Button */}
             <button
               onClick={onClose}
+              aria-label="Close resume preview"
               className="p-2 rounded-full hover:bg-zinc-900/5 dark:hover:bg-white/5 text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
             >
               <X size={16} />

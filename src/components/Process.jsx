@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, Shield, Network, Zap, Cpu, Award, Milestone, GraduationCap, Briefcase, FileCode } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
@@ -142,7 +142,7 @@ export default function Process() {
                         <div className="absolute -inset-[1px] rounded-[24px] z-[-1] bg-gradient-to-b from-terracotta/50 via-terracotta/5 to-transparent opacity-0 animate-[glow-pulse_3s_ease-in-out_infinite]" />
                         
                         <div className="space-y-2">
-                          <h3 className="font-heading text-2xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white leading-tight">
+                          <h3 className="text-xl font-black uppercase tracking-wider text-zinc-900 dark:text-white leading-tight">
                             {stepItem.title}
                           </h3>
                           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">

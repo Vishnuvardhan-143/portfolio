@@ -1,245 +1,182 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { MapPin, ArrowDown } from 'lucide-react';
-import Reveal from './Reveal';
+import { useEffect, useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { ArrowDown, ArrowUpRight, Database, GitBranch, MapPin, Play, ShieldCheck, Sparkles } from 'lucide-react';
+import FadingVideo from './FadingVideo';
+import SpaceCanvas from './SpaceCanvas';
 import { portfolioData } from '../data/portfolioData';
 import vizzImage from '../assets/vizz.jpg';
 
-const letterAnimation = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-  }
-};
+const HERO_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4';
 
-const marqueeWords = ["Design", "Develop", "Discover", "Deploy", "Ship"];
+const words = ['Distributed', 'Systems', 'Big', 'Data', 'Spring', 'Boot', 'AI'];
+
+function BlurText({ text }) {
+  return (
+    <span className="blur-text">
+      {text.split(' ').map((word, index) => (
+        <motion.span
+          key={`${word}-${index}`}
+          initial={{ filter: 'blur(10px)', opacity: 0, y: 48 }}
+          animate={{ filter: ['blur(10px)', 'blur(5px)', 'blur(0px)'], opacity: [0, 0.55, 1], y: [48, -5, 0] }}
+          transition={{ delay: index * 0.1 + 0.2, duration: 0.7, ease: 'easeOut', times: [0, 0.5, 1] }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
 
 export default function Hero({ onViewResume }) {
   const [time, setTime] = useState('');
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const smoothX = useSpring(pointerX, { stiffness: 90, damping: 24 });
+  const smoothY = useSpring(pointerY, { stiffness: 90, damping: 24 });
+  const rotateX = useTransform(smoothY, [-0.5, 0.5], [7, -7]);
+  const rotateY = useTransform(smoothX, [-0.5, 0.5], [-9, 9]);
 
   useEffect(() => {
     const updateTime = () => {
-      const now = new Date();
-      setTime(now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }));
+      setTime(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }));
     };
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const currentYear = new Date().getFullYear();
+  const handlePointerMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    pointerX.set((event.clientX - rect.left) / rect.width - 0.5);
+    pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
+  };
 
   return (
-    <section 
-      id="home" 
-      className="relative min-h-screen flex flex-col justify-between pt-28 pb-10 bg-beige dark:bg-charcoal transition-colors duration-500 overflow-hidden"
+    <section
+      id="home"
+      onPointerMove={handlePointerMove}
+      className="relative min-h-screen overflow-hidden bg-[#010207] text-white"
     >
-      {/* Ambient Radial Glows */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-full max-w-6xl h-[400px] md:h-[600px] ambient-glow-light dark:ambient-glow-dark opacity-100 transition-opacity duration-700" />
-      </div>
+      <FadingVideo
+        src={HERO_VIDEO}
+        className="absolute left-1/2 top-0 z-0 h-[120%] w-[120%] -translate-x-1/2 object-cover object-top opacity-60"
+      />
+      <SpaceCanvas />
+      <div className="hero-vignette" />
 
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-16 lg:px-20 flex-1 flex flex-col justify-center">
-        
-        {/* Top Info Bar */}
-        <Reveal delay={0.1}>
-          <div className="flex flex-wrap items-center gap-4 text-[9px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-12">
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-accent pulse-badge shrink-0" />
-              Available for collaborations · {currentYear}
-            </div>
-            <span className="hidden sm:inline opacity-30">/</span>
-            <a 
-              href="https://maps.google.com/?q=Proddatur,Kadapa,Andhra+Pradesh,India"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 hover:text-terracotta dark:hover:text-orange-500 transition-colors cursor-pointer"
-            >
-              <MapPin size={10} className="text-terracotta dark:text-orange-500" />
-              Proddatur, AP, India
-            </a>
-            <span className="hidden sm:inline opacity-30">/</span>
-            <div className="text-zinc-900 dark:text-white bg-zinc-900/5 dark:bg-white/5 px-2 py-0.5 rounded border border-zinc-900/10 dark:border-white/10">
-              {time} IST
-            </div>
-          </div>
-        </Reveal>
-
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          
-          {/* Left Column: Hero Content */}
-          <div className="flex flex-col gap-6 text-left items-start">
-            
-            {/* Display Headline */}
-            <motion.h1 
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: {},
-                visible: { transition: { staggerChildren: 0.05, delayChildren: 0.2 } }
-              }}
-              className="font-heading text-[clamp(3.5rem,8vw,7.5rem)] font-bold leading-[0.9] tracking-tight uppercase text-zinc-900 dark:text-[#f5f1e8] select-none"
-            >
-              <div className="flex flex-wrap overflow-hidden">
-                {"VISHNU".split('').map((char, index) => (
-                  <motion.span key={index} variants={letterAnimation}>{char}</motion.span>
-                ))}
-              </div>
-              <div className="flex flex-wrap overflow-hidden text-transparent bg-clip-text bg-gradient-to-r from-terracotta to-orange-500 italic pr-4">
-                {"ANNAREDDY.".split('').map((char, index) => (
-                  <motion.span key={index} variants={letterAnimation}>{char}</motion.span>
-                ))}
-              </div>
-            </motion.h1>
-
-            {/* Role Subtitle with Line */}
-            <Reveal delay={0.6}>
-              <div className="flex items-center gap-4 mt-2">
-                <div className="w-10 h-[2px] bg-terracotta dark:bg-orange-500" />
-                <span className="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-400">
-                  Distributed Systems Engineer & Spring Boot Dev
-                </span>
-              </div>
-            </Reveal>
-
-            {/* Pill Tags */}
-            <Reveal delay={0.7}>
-              <div className="flex flex-wrap gap-2.5 mt-2">
-                {['DISTRIBUTED SYSTEMS', 'SPRING BOOT DEV', 'BIG DATA PYSPARK'].map((tag) => (
-                  <span 
-                    key={tag}
-                    className="px-4 py-2 rounded-full bg-zinc-900/5 dark:bg-white/5 border border-zinc-900/10 dark:border-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </Reveal>
-
-            {/* Tagline */}
-            <Reveal delay={0.8}>
-              <p className="text-zinc-600 dark:text-zinc-400 font-sans text-sm md:text-base font-medium leading-relaxed max-w-lg mt-2">
-                Building <span className="text-zinc-900 dark:text-[#f5f1e8] font-bold italic font-heading underline decoration-[1.5px] decoration-terracotta underline-offset-4">high-performance systems</span> and big data engines — engineered with precision, designed for scale, shipped with care.
-              </p>
-            </Reveal>
-
-            {/* Action Buttons */}
-            <Reveal delay={0.85}>
-              <div className="flex flex-wrap gap-4 mt-2">
-                <button
-                  onClick={onViewResume}
-                  className="px-6 py-3.5 rounded-2xl bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal hover:bg-terracotta dark:hover:bg-orange-500 dark:hover:text-charcoal transition-all duration-300 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer shadow-lg hover:-translate-y-0.5"
-                >
-                  Show Resume
-                </button>
-                <a
-                  href="#contact"
-                  className="px-6 py-3.5 rounded-2xl bg-zinc-900/5 dark:bg-white/5 border border-zinc-900/10 dark:border-white/10 hover:border-terracotta/40 dark:hover:border-orange-500/40 text-zinc-800 dark:text-[#f5f1e8] text-[10px] font-black uppercase tracking-widest transition-all duration-300 flex items-center gap-1.5 hover:-translate-y-0.5 animate-pulse"
-                >
-                  Get in touch
-                </a>
-              </div>
-            </Reveal>
-
-            {/* Statistics Row */}
-            <Reveal delay={0.9}>
-              <div className="grid grid-cols-3 gap-8 w-full max-w-lg text-left mt-4 pb-8">
-                <div>
-                  <span className="block text-2xl md:text-3xl font-bold font-heading text-terracotta dark:text-orange-500">10+</span>
-                  <span className="text-[8px] md:text-[9px] font-black uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mt-1 block">Technologies Mastered</span>
-                </div>
-                <div>
-                  <span className="block text-2xl md:text-3xl font-bold font-heading text-terracotta dark:text-orange-500">9.19</span>
-                  <span className="text-[8px] md:text-[9px] font-black uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mt-1 block">SASTRA University CSE</span>
-                </div>
-                <div>
-                  <span className="block text-2xl md:text-3xl font-bold font-heading text-terracotta dark:text-orange-500">AIR 5005</span>
-                  <span className="text-[8px] md:text-[9px] font-black uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mt-1 block">GATE 2025 CSE Triumph</span>
-                </div>
-              </div>
-            </Reveal>
-
-          </div>
-
-          {/* Right Column: Profile Image Card */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95, x: 25 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="flex justify-center lg:justify-end w-full pb-8"
-          >
-            <div className="relative w-full max-w-md aspect-[3/4] rounded-[2.5rem] p-4 border border-zinc-900/10 dark:border-white/5 bg-zinc-900/[0.03] dark:bg-white/[0.03] backdrop-blur-sm shadow-2xl group flex flex-col justify-end overflow-hidden">
-              
-              <div className="absolute inset-4 rounded-[2rem] overflow-hidden bg-zinc-100 dark:bg-zinc-950">
-                <img 
-                  src={vizzImage} 
-                  alt="Annareddy Venkata Vishnuvardhan Reddy" 
-                  className="w-full h-full object-cover filter contrast-[1.03] group-hover:scale-[1.03] transition-transform duration-700 ease-[0.22,1,0.36,1]" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
-              </div>
-
-              <div className="absolute bottom-8 left-8 right-8 backdrop-blur-md bg-zinc-950/65 border border-white/10 px-5 py-3 rounded-2xl flex items-center justify-between shadow-lg text-[9px] font-black tracking-wider text-white uppercase select-none">
-                <span>A. V. VISHNU</span>
-                <span className="text-zinc-400">·</span>
-                <span className="text-zinc-300">SOFTWARE ENG</span>
-              </div>
-
-            </div>
-          </motion.div>
-
-        </div>
-      </div>
-
-      {/* Bottom Marquee & Scroll Indicator */}
-      <div className="relative z-10 w-full mt-auto flex flex-col items-center">
-        
-        {/* Scroll Indicator */}
-        <Reveal delay={1.2} className="mb-6">
-          <div className="flex flex-col items-center gap-2 text-zinc-400 dark:text-zinc-500">
-            <span className="text-[9px] font-black uppercase tracking-[0.3em]">Scroll</span>
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1480px] flex-col px-5 pb-8 pt-28 md:px-12 lg:px-20">
+        <div className="grid flex-1 items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="max-w-4xl">
             <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              initial={{ filter: 'blur(10px)', opacity: 0, y: 22 }}
+              animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.75, ease: 'easeOut' }}
+              className="liquid-glass mb-6 inline-flex max-w-full items-center gap-2 rounded-full px-2 py-1.5 text-xs text-white/90"
             >
-              <ArrowDown size={14} />
+              <span className="rounded-full bg-white px-3 py-1 font-bold text-black">Open</span>
+              <span className="pr-3">Available for backend, data, and AI product engineering</span>
+            </motion.div>
+
+            <h1 className="font-heading text-[clamp(4rem,9.8vw,8.9rem)] font-black italic leading-[0.78] tracking-tight text-white">
+              <BlurText text="Engineering beyond the ordinary" />
+            </h1>
+
+            <motion.p
+              initial={{ filter: 'blur(8px)', opacity: 0, y: 20 }}
+              animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
+              transition={{ delay: 0.85, duration: 0.7, ease: 'easeOut' }}
+              className="mt-7 max-w-2xl text-sm font-light leading-relaxed text-white/82 md:text-base"
+            >
+              I am {portfolioData.personalInfo.fullName}, a systems-focused software engineer building secure microservices, PySpark data engines, and AI-assisted product experiences with precision at scale.
+            </motion.p>
+
+            <motion.div
+              initial={{ filter: 'blur(8px)', opacity: 0, y: 18 }}
+              animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
+              transition={{ delay: 1.05, duration: 0.65, ease: 'easeOut' }}
+              className="mt-8 flex flex-wrap items-center gap-4"
+            >
+              <button onClick={onViewResume} className="liquid-glass-strong group inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white">
+                View Resume
+                <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+              <a href="#projects" className="group inline-flex items-center gap-2 text-sm font-semibold text-white/90">
+                <span className="grid h-10 w-10 place-items-center rounded-full bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.22)]">
+                  <Play className="h-4 w-4 fill-current" />
+                </span>
+                Explore Systems
+              </a>
+            </motion.div>
+
+            <motion.div
+              initial={{ filter: 'blur(8px)', opacity: 0, y: 18 }}
+              animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
+              transition={{ delay: 1.25, duration: 0.65, ease: 'easeOut' }}
+              className="mt-9 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3"
+            >
+              {[
+                { icon: ShieldCheck, value: 'AIR 5005', label: 'GATE CSE 2025' },
+                { icon: Database, value: '9.19', label: 'SASTRA CSE CGPA' },
+                { icon: GitBranch, value: '4+', label: 'Production Systems' },
+              ].map((stat) => (
+                <div key={stat.label} className="liquid-glass stat-card rounded-[1.25rem] p-4">
+                  <stat.icon className="h-6 w-6 text-cyan-200" />
+                  <strong className="mt-5 block font-heading text-3xl italic leading-none text-white">{stat.value}</strong>
+                  <span className="mt-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-white/62">{stat.label}</span>
+                </div>
+              ))}
             </motion.div>
           </div>
-        </Reveal>
 
-        {/* Endless Marquee Strip */}
-        <div className="w-full border-t border-zinc-900/5 dark:border-white/5 bg-zinc-900/[0.02] dark:bg-white/[0.02] py-4 overflow-hidden flex select-none">
-          <div className="animate-marquee flex gap-12 whitespace-nowrap items-center font-heading text-3xl font-black uppercase tracking-tight opacity-80">
-            {marqueeWords.map((word, i) => (
-              <React.Fragment key={`m1-${i}`}>
-                <span className="marquee-text">{word}</span>
-                <span className="text-terracotta dark:text-orange-500 opacity-60">*</span>
-              </React.Fragment>
-            ))}
-            {marqueeWords.map((word, i) => (
-              <React.Fragment key={`m2-${i}`}>
-                <span className="marquee-text">{word}</span>
-                <span className="text-terracotta dark:text-orange-500 opacity-60">*</span>
-              </React.Fragment>
-            ))}
-            {marqueeWords.map((word, i) => (
-              <React.Fragment key={`m3-${i}`}>
-                <span className="marquee-text">{word}</span>
-                <span className="text-terracotta dark:text-orange-500 opacity-60">*</span>
-              </React.Fragment>
-            ))}
-            {marqueeWords.map((word, i) => (
-              <React.Fragment key={`m4-${i}`}>
-                <span className="marquee-text">{word}</span>
-                <span className="text-terracotta dark:text-orange-500 opacity-60">*</span>
-              </React.Fragment>
-            ))}
-          </div>
+          <motion.div
+            style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+            initial={{ opacity: 0, scale: 0.92, x: 24 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ delay: 0.55, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+            className="relative mx-auto w-full max-w-[520px] lg:ml-auto"
+          >
+            <div className="orbit-stage">
+              <div className="orbit-ring orbit-ring-one" />
+              <div className="orbit-ring orbit-ring-two" />
+              <div className="orbit-ring orbit-ring-three" />
+              <div className="profile-capsule liquid-glass">
+                <img src={vizzImage} alt="Annareddy Venkata Vishnuvardhan Reddy" className="h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 rounded-[1.25rem] border border-white/12 bg-black/45 p-4 backdrop-blur-xl">
+                  <div className="flex items-center justify-between gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+                    <span>A. V. Vishnu</span>
+                    <span>{time} IST</span>
+                  </div>
+                  <div className="mt-3 flex items-center gap-2 text-xs text-white/65">
+                    <MapPin className="h-3.5 w-3.5 text-amber-200" />
+                    Proddatur, Andhra Pradesh
+                  </div>
+                </div>
+              </div>
+              <div className="floating-chip chip-a liquid-glass"><Sparkles className="h-4 w-4" /> Spring Boot</div>
+              <div className="floating-chip chip-b liquid-glass">PySpark</div>
+              <div className="floating-chip chip-c liquid-glass">Microservices</div>
+            </div>
+          </motion.div>
         </div>
-      </div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.45, duration: 0.65, ease: 'easeOut' }}
+          className="flex flex-col items-center gap-5 pt-8"
+        >
+          <div className="liquid-glass rounded-full px-4 py-1.5 text-xs font-medium text-white/78">
+            Systems stack in orbit
+          </div>
+          <div className="flex w-full flex-wrap justify-center gap-7 font-heading text-2xl italic text-white/88 md:gap-12 md:text-3xl">
+            {words.map((word) => <span key={word}>{word}</span>)}
+          </div>
+          <a href="#about" className="grid h-10 w-10 place-items-center rounded-full text-white/70">
+            <ArrowDown className="h-5 w-5 animate-bounce" />
+          </a>
+        </motion.div>
+      </div>
     </section>
   );
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Award, GraduationCap, Briefcase, FileText, ChevronRight } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
@@ -134,7 +133,7 @@ export default function About({ onViewResume }) {
                     <div className="flex items-baseline gap-2">
                       <span className="text-zinc-400 dark:text-zinc-500 text-[10px] font-black uppercase tracking-widest">{card.subtitle}</span>
                     </div>
-                    <h4 className="font-heading text-lg font-bold text-zinc-900 dark:text-white uppercase tracking-tight">{card.title}</h4>
+                    <h4 className="text-lg font-black text-zinc-900 dark:text-white uppercase tracking-wider mb-1">{card.title}</h4>
                     <span className="inline-block text-xs font-black px-2.5 py-0.5 rounded-full bg-zinc-900/5 dark:bg-white/5 text-terracotta dark:text-orange-400 border border-zinc-900/5 dark:border-white/5 mt-1">{card.value}</span>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed pt-2">{card.desc}</p>
                   </div>

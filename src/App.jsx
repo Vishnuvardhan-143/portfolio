@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -13,33 +13,31 @@ import Chatbot from './components/Chatbot';
 import Loader from './components/Loader';
 import ResumeModal from './components/ResumeModal';
 import { AnimatePresence } from 'framer-motion';
-import { Sun, Moon } from 'lucide-react';
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const [theme, setTheme] = useState(() => {
+
+  const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
-      if (saved) return saved;
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (saved) return saved === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
-    return 'light';
+    return true;
   });
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
-      root.classList.remove('dark');
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+  }, [isDark]);
 
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
-  };
+  const toggleTheme = () => setIsDark(!isDark);
 
   return (
     <>
@@ -48,7 +46,7 @@ function App() {
       </AnimatePresence>
 
       <div className="relative min-h-screen bg-theme font-sans">
-        <Header theme={theme} toggleTheme={toggleTheme} onViewResume={() => setIsResumeOpen(true)} />
+        <Header onViewResume={() => setIsResumeOpen(true)} isDark={isDark} toggleTheme={toggleTheme} />
         <main>
           <Hero onViewResume={() => setIsResumeOpen(true)} />
           <About onViewResume={() => setIsResumeOpen(true)} />
@@ -63,14 +61,6 @@ function App() {
         <Chatbot />
         <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
 
-        {/* Floating Theme Toggle - Bottom Right, above chatbot */}
-        <button
-          onClick={toggleTheme}
-          className="fixed bottom-20 right-6 z-50 p-3 rounded-full bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal hover:bg-terracotta dark:hover:bg-orange-500 shadow-xl cursor-pointer hover:scale-105 transition-all duration-300 flex items-center justify-center border border-zinc-900/10 dark:border-white/5"
-          aria-label="Toggle Theme"
-        >
-          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-        </button>
       </div>
     </>
   );

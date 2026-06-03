@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Code, CheckCircle, Database, Server, Brain, Cpu, Layers } from 'lucide-react';
+import { CheckCircle, Database, Server, Brain, Layers } from 'lucide-react';
 import { Github } from './Icons';
 import { portfolioData } from '../data/portfolioData';
 
@@ -77,7 +77,7 @@ export default function Projects() {
           className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, idx) => {
+            {filteredProjects.map((project) => {
               const isExpanded = expandedProject === project.title;
               return (
                 <motion.div 
@@ -103,7 +103,7 @@ export default function Projects() {
                     </div>
 
                     {/* Title & Description */}
-                    <h3 className="font-heading text-2xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white group-hover/card:text-terracotta dark:group-hover/card:text-orange-400 transition-colors">
+                    <h3 className="text-2xl font-black uppercase tracking-wider text-zinc-900 dark:text-white group-hover/card:text-terracotta dark:group-hover/card:text-orange-400 transition-colors">
                       {project.title}
                     </h3>
                     <h4 className="text-xs font-bold text-zinc-400 dark:text-zinc-500 mt-1 mb-4 uppercase tracking-wider">
