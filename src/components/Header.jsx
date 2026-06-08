@@ -56,7 +56,7 @@ export default function Header({ onViewResume, isDark, toggleTheme }) {
       >
         <a
           href="#home"
-          className="liquid-glass grid h-12 w-12 place-items-center rounded-full font-heading text-2xl font-black italic text-white"
+          className="liquid-glass grid h-12 w-12 place-items-center rounded-full font-heading text-2xl font-black italic text-foreground"
           aria-label="Back to home"
         >
           {portfolioData.personalInfo.nickname.slice(0, 1).toLowerCase()}
@@ -69,8 +69,8 @@ export default function Header({ onViewResume, isDark, toggleTheme }) {
               href={link.href}
               className={`rounded-full px-3 py-2 text-sm font-medium transition-colors ${
                 activeSection === link.href.substring(1)
-                  ? 'bg-white/20 text-white shadow-sm'
-                  : 'text-white/86 hover:bg-white/10 hover:text-white'
+                  ? 'bg-accent/20 text-accent shadow-sm'
+                  : 'text-foreground/80 hover:bg-accent/10 hover:text-accent'
               }`}
             >
               {link.name}
@@ -78,7 +78,7 @@ export default function Header({ onViewResume, isDark, toggleTheme }) {
           ))}
           <button
             onClick={onViewResume}
-            className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-black shadow-[0_10px_30px_rgba(255,255,255,0.16)] transition-transform hover:scale-[1.02]"
+            className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-transform hover:scale-[1.02]"
           >
             Resume
             <ArrowUpRight className="h-4 w-4" />
@@ -87,7 +87,7 @@ export default function Header({ onViewResume, isDark, toggleTheme }) {
 
         <button
           onClick={toggleTheme}
-          className="hidden h-12 w-12 items-center justify-center rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors md:flex"
+          className="hidden h-12 w-12 items-center justify-center rounded-full text-foreground/60 hover:text-accent hover:bg-accent/10 transition-colors md:flex"
           aria-label="Toggle theme"
         >
           {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -96,7 +96,7 @@ export default function Header({ onViewResume, isDark, toggleTheme }) {
         <button
           onClick={() => setMobileMenuOpen((prev) => !prev)}
           aria-label="Toggle menu"
-          className="liquid-glass grid h-12 w-12 place-items-center rounded-full text-white md:hidden"
+          className="liquid-glass grid h-12 w-12 place-items-center rounded-full text-foreground md:hidden hover:text-accent"
         >
           {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -112,8 +112,8 @@ export default function Header({ onViewResume, isDark, toggleTheme }) {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`rounded-2xl px-4 py-3 text-base font-semibold transition-colors ${
                   activeSection === link.href.substring(1)
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/90 hover:bg-white/10'
+                    ? 'bg-accent/20 text-accent'
+                    : 'text-foreground/80 hover:bg-accent/10 hover:text-accent'
                 }`}
               >
                 {link.name}
@@ -124,7 +124,7 @@ export default function Header({ onViewResume, isDark, toggleTheme }) {
                 setMobileMenuOpen(false);
                 onViewResume();
               }}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-black"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]"
             >
               View Resume
               <ArrowUpRight className="h-4 w-4" />

@@ -1,181 +1,122 @@
-import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ArrowDown, ArrowUpRight, Database, GitBranch, MapPin, Play, ShieldCheck, Sparkles } from 'lucide-react';
-import FadingVideo from './FadingVideo';
-import SpaceCanvas from './SpaceCanvas';
+import { useEffect, useRef, useState } from 'react';
+import Hls from 'hls.js';
+import gsap from 'gsap';
 import { portfolioData } from '../data/portfolioData';
-import vizzImage from '../assets/vizz.jpg';
 
-const HERO_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4';
+const roles = ["Creative", "Fullstack", "Engineer", "Scholar"];
 
-const words = ['Distributed', 'Systems', 'Big', 'Data', 'Spring', 'Boot', 'AI'];
-
-function BlurText({ text }) {
-  return (
-    <span className="blur-text">
-      {text.split(' ').map((word, index) => (
-        <motion.span
-          key={`${word}-${index}`}
-          initial={{ filter: 'blur(10px)', opacity: 0, y: 48 }}
-          animate={{ filter: ['blur(10px)', 'blur(5px)', 'blur(0px)'], opacity: [0, 0.55, 1], y: [48, -5, 0] }}
-          transition={{ delay: index * 0.1 + 0.2, duration: 0.7, ease: 'easeOut', times: [0, 0.5, 1] }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
-
-export default function Hero({ onViewResume }) {
-  const [time, setTime] = useState('');
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const smoothX = useSpring(pointerX, { stiffness: 90, damping: 24 });
-  const smoothY = useSpring(pointerY, { stiffness: 90, damping: 24 });
-  const rotateX = useTransform(smoothY, [-0.5, 0.5], [7, -7]);
-  const rotateY = useTransform(smoothX, [-0.5, 0.5], [-9, 9]);
+export default function Hero() {
+  const videoRef = useRef(null);
+  const heroRef = useRef(null);
+  const [roleIndex, setRoleIndex] = useState(0);
 
   useEffect(() => {
-    const updateTime = () => {
-      setTime(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }));
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
+    // Setup HLS video
+    const video = videoRef.current;
+    const hlsSource = 'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8';
+
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(hlsSource);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(e => console.error("Video play failed", e));
+      });
+      return () => hls.destroy();
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = hlsSource;
+      video.addEventListener('loadedmetadata', () => {
+        video.play().catch(e => console.error("Video play failed", e));
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    // Roles interval
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % roles.length);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
-  const handlePointerMove = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    pointerX.set((event.clientX - rect.left) / rect.width - 0.5);
-    pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
-  };
+  useEffect(() => {
+    // GSAP Animations
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      tl.fromTo('.name-reveal', 
+        { opacity: 0, y: 50 }, 
+        { opacity: 1, y: 0, duration: 1.2, delay: 0.1 }
+      )
+      .fromTo('.blur-in', 
+        { opacity: 0, filter: 'blur(10px)', y: 20 }, 
+        { opacity: 1, filter: 'blur(0px)', y: 0, duration: 1, stagger: 0.1 },
+        0.3
+      );
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section
-      id="home"
-      onPointerMove={handlePointerMove}
-      className="relative min-h-screen overflow-hidden bg-[#010207] text-white"
-    >
-      <FadingVideo
-        src={HERO_VIDEO}
-        className="absolute left-1/2 top-0 z-0 h-[120%] w-[120%] -translate-x-1/2 object-cover object-top opacity-60"
-      />
-      <SpaceCanvas />
-      <div className="hero-vignette" />
+    <section id="home" ref={heroRef} className="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden">
+      {/* Background Video */}
+      <div className="absolute inset-0 z-0">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2"
+        />
+        {/* Overlays - Reduced to show galaxy */}
+        <div className="absolute inset-0 bg-black/10 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-bg via-bg/80 to-transparent" />
+      </div>
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1480px] flex-col px-5 pb-8 pt-28 md:px-12 lg:px-20">
-        <div className="grid flex-1 items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="max-w-4xl">
-            <motion.div
-              initial={{ filter: 'blur(10px)', opacity: 0, y: 22 }}
-              animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.75, ease: 'easeOut' }}
-              className="liquid-glass mb-6 inline-flex max-w-full items-center gap-2 rounded-full px-2 py-1.5 text-xs text-white/90"
-            >
-              <span className="rounded-full bg-white px-3 py-1 font-bold text-black">Open</span>
-              <span className="pr-3">Available for backend, data, and AI product engineering</span>
-            </motion.div>
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center text-center px-4 w-full max-w-5xl">
+        <p className="blur-in text-xs text-muted uppercase tracking-[0.3em] mb-8">
+          COLLECTION '26
+        </p>
 
-            <h1 className="font-heading text-[clamp(4rem,9.8vw,8.9rem)] font-black italic leading-[0.78] tracking-tight text-white">
-              <BlurText text="Engineering beyond the ordinary" />
-            </h1>
+        <h1 className="name-reveal text-6xl md:text-8xl lg:text-9xl font-display italic leading-[0.9] tracking-tight text-text-primary mb-6">
+          {portfolioData.personalInfo.fullName}
+        </h1>
 
-            <motion.p
-              initial={{ filter: 'blur(8px)', opacity: 0, y: 20 }}
-              animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
-              transition={{ delay: 0.85, duration: 0.7, ease: 'easeOut' }}
-              className="mt-7 max-w-2xl text-sm font-light leading-relaxed text-white/82 md:text-base"
-            >
-              I am {portfolioData.personalInfo.fullName}, a systems-focused software engineer building secure microservices, PySpark data engines, and AI-assisted product experiences with precision at scale.
-            </motion.p>
-
-            <motion.div
-              initial={{ filter: 'blur(8px)', opacity: 0, y: 18 }}
-              animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
-              transition={{ delay: 1.05, duration: 0.65, ease: 'easeOut' }}
-              className="mt-8 flex flex-wrap items-center gap-4"
-            >
-              <button onClick={onViewResume} className="liquid-glass-strong group inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white">
-                View Resume
-                <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
-              <a href="#projects" className="group inline-flex items-center gap-2 text-sm font-semibold text-white/90">
-                <span className="grid h-10 w-10 place-items-center rounded-full bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.22)]">
-                  <Play className="h-4 w-4 fill-current" />
-                </span>
-                Explore Systems
-              </a>
-            </motion.div>
-
-            <motion.div
-              initial={{ filter: 'blur(8px)', opacity: 0, y: 18 }}
-              animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
-              transition={{ delay: 1.25, duration: 0.65, ease: 'easeOut' }}
-              className="mt-9 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3"
-            >
-              {[
-                { icon: ShieldCheck, value: 'AIR 5005', label: 'GATE CSE 2025' },
-                { icon: Database, value: '9.19', label: 'SASTRA CSE CGPA' },
-                { icon: GitBranch, value: '4+', label: 'Production Systems' },
-              ].map((stat) => (
-                <div key={stat.label} className="liquid-glass stat-card rounded-[1.25rem] p-4">
-                  <stat.icon className="h-6 w-6 text-cyan-200" />
-                  <strong className="mt-5 block font-heading text-3xl italic leading-none text-white">{stat.value}</strong>
-                  <span className="mt-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-white/62">{stat.label}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          <motion.div
-            style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-            initial={{ opacity: 0, scale: 0.92, x: 24 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ delay: 0.55, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-[520px] lg:ml-auto"
-          >
-            <div className="orbit-stage">
-              <div className="orbit-ring orbit-ring-one" />
-              <div className="orbit-ring orbit-ring-two" />
-              <div className="orbit-ring orbit-ring-three" />
-              <div className="profile-capsule liquid-glass">
-                <img src={vizzImage} alt="Annareddy Venkata Vishnuvardhan Reddy" className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                <div className="absolute bottom-5 left-5 right-5 rounded-[1.25rem] border border-white/12 bg-black/45 p-4 backdrop-blur-xl">
-                  <div className="flex items-center justify-between gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
-                    <span>A. V. Vishnu</span>
-                    <span>{time} IST</span>
-                  </div>
-                  <div className="mt-3 flex items-center gap-2 text-xs text-white/65">
-                    <MapPin className="h-3.5 w-3.5 text-amber-200" />
-                    Proddatur, Andhra Pradesh
-                  </div>
-                </div>
-              </div>
-              <div className="floating-chip chip-a liquid-glass"><Sparkles className="h-4 w-4" /> Spring Boot</div>
-              <div className="floating-chip chip-b liquid-glass">PySpark</div>
-              <div className="floating-chip chip-c liquid-glass">Microservices</div>
-            </div>
-          </motion.div>
+        <div className="blur-in text-lg md:text-2xl text-muted mb-6 flex items-center gap-2">
+          A <span key={roleIndex} className="font-display italic text-text-primary animate-role-fade-in inline-block">{roles[roleIndex]}</span> lives in {portfolioData.personalInfo.location.split(',')[0]}.
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.45, duration: 0.65, ease: 'easeOut' }}
-          className="flex flex-col items-center gap-5 pt-8"
-        >
-          <div className="liquid-glass rounded-full px-4 py-1.5 text-xs font-medium text-white/78">
-            Systems stack in orbit
-          </div>
-          <div className="flex w-full flex-wrap justify-center gap-7 font-heading text-2xl italic text-white/88 md:gap-12 md:text-3xl">
-            {words.map((word) => <span key={word}>{word}</span>)}
-          </div>
-          <a href="#about" className="grid h-10 w-10 place-items-center rounded-full text-white/70">
-            <ArrowDown className="h-5 w-5 animate-bounce" />
+        <p className="blur-in text-sm md:text-base text-muted max-w-md mb-12">
+          {portfolioData.personalInfo.bio}
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="blur-in flex flex-col sm:flex-row items-center gap-4">
+          <a href="#work" className="relative group inline-flex rounded-full">
+            <span className="absolute inset-0 rounded-full animated-gradient-border opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <button className="relative rounded-full px-7 py-3.5 text-sm bg-text-primary text-bg group-hover:bg-bg group-hover:text-text-primary transition-colors hover:scale-105 duration-300">
+              See Works
+            </button>
           </a>
-        </motion.div>
+          <a href={`mailto:${portfolioData.personalInfo.email}`} className="relative group inline-flex rounded-full">
+            <span className="absolute inset-0 rounded-full animated-gradient-border opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <button className="relative rounded-full px-7 py-3.5 text-sm border-2 border-stroke bg-bg text-text-primary group-hover:border-transparent transition-all hover:scale-105 duration-300">
+              Reach out...
+            </button>
+          </a>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10">
+        <span className="text-[10px] text-muted uppercase tracking-[0.2em]">Scroll</span>
+        <div className="w-px h-10 bg-stroke relative overflow-hidden">
+          <div className="w-full h-full bg-text-primary animate-scroll-down" />
+        </div>
       </div>
     </section>
   );

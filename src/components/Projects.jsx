@@ -26,19 +26,19 @@ export default function Projects() {
   return (
     <section 
       id="projects" 
-      className="relative py-24 bg-beige dark:bg-charcoal border-t border-zinc-200/50 dark:border-zinc-900/50 transition-colors duration-500"
+      className="relative py-24 bg-background border-t border-border/50 transition-colors duration-500"
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 lg:px-20 relative z-10">
         
         {/* Section Heading */}
         <div className="flex flex-col items-center gap-3 mb-16 text-center">
-          <span className="text-[10px] font-black uppercase tracking-[0.5em] text-terracotta dark:text-orange-500">
+          <span className="text-[10px] font-black uppercase tracking-[0.5em] text-accent">
             Engineered Systems
           </span>
-          <h2 className="font-heading text-4xl md:text-5xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white">
+          <h2 className="font-heading text-4xl md:text-5xl font-bold uppercase tracking-tight text-foreground">
             Technical Portfolio
           </h2>
-          <div className="w-12 h-1 bg-terracotta dark:bg-orange-500 mt-2 rounded-full" />
+          <div className="w-12 h-1 bg-accent mt-2 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.4)]" />
         </div>
 
         {/* Filter Tabs */}
@@ -52,8 +52,8 @@ export default function Projects() {
               }}
               className={`px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 cursor-pointer ${
                 activeFilter === filter
-                  ? 'bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal shadow-md'
-                  : 'bg-zinc-900/5 dark:bg-white/5 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-900/10 dark:hover:bg-white/10'
+                  ? 'bg-accent text-white shadow-[0_0_15px_rgba(37,99,235,0.3)]'
+                  : 'bg-zinc-900/5 dark:bg-white/5 text-foreground/50 hover:bg-zinc-900/10 dark:hover:bg-white/10'
               }`}
             >
               {filter}
@@ -88,28 +88,28 @@ export default function Projects() {
                   exit={{ opacity: 0, scale: 0.95, y: 30 }}
                   transition={{ duration: 0.5, ease: [0.215, 0.61, 0.355, 1] }}
                   whileHover={{ y: -6 }}
-                  className="glass-card p-8 flex flex-col justify-between border border-zinc-900/5 dark:border-white/5 relative group/card hover:shadow-lg dark:hover:shadow-black/30"
+                  className="liquid-glass-strong p-8 flex flex-col justify-between border border-zinc-900/5 dark:border-white/5 relative group/card hover:shadow-[0_40px_100px_-15px_rgba(0,0,0,0.9)]"
                 >
-                  <div>
+                  <div className="relative z-10">
                     {/* Category Tag Header */}
                     <div className="flex items-center justify-between mb-4">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/5 dark:bg-white/5 border border-zinc-900/5 dark:border-white/5 text-[9px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/5 dark:bg-white/5 border border-border/50 text-[9px] font-black uppercase tracking-widest text-foreground/60">
                         {getTagIcon(project.tag)}
                         {project.tag}
                       </span>
-                      <span className="text-[9px] font-black text-emerald-accent dark:text-[#52c49a] uppercase tracking-widest">
+                      <span className="text-[9px] font-black text-accent uppercase tracking-widest">
                         Production Ready
                       </span>
                     </div>
 
                     {/* Title & Description */}
-                    <h3 className="text-2xl font-black uppercase tracking-wider text-zinc-900 dark:text-white group-hover/card:text-terracotta dark:group-hover/card:text-orange-400 transition-colors">
+                    <h3 className="text-2xl font-black uppercase tracking-wider text-foreground group-hover/card:text-accent transition-colors">
                       {project.title}
                     </h3>
-                    <h4 className="text-xs font-bold text-zinc-400 dark:text-zinc-500 mt-1 mb-4 uppercase tracking-wider">
+                    <h4 className="text-xs font-bold text-foreground/50 mt-1 mb-4 uppercase tracking-wider">
                       {project.subtitle}
                     </h4>
-                    <p className="text-xs text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed mb-6">
+                    <p className="text-xs text-foreground/70 font-medium leading-relaxed mb-6">
                       {project.description}
                     </p>
 
@@ -118,9 +118,9 @@ export default function Projects() {
                       {project.metrics.map((metric, mIdx) => (
                         <div 
                           key={mIdx}
-                          className="px-3 py-2 rounded-xl bg-zinc-900/2 dark:bg-white/2 border border-zinc-900/5 dark:border-white/5 text-[10px] font-black uppercase tracking-widest text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5"
+                          className="px-3 py-2 rounded-xl bg-zinc-900/2 dark:bg-white/2 border border-border/50 text-[10px] font-black uppercase tracking-widest text-foreground/80 flex items-center gap-1.5"
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-orange-500" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                           {metric}
                         </div>
                       ))}
@@ -132,7 +132,7 @@ export default function Projects() {
                     {project.tech.map((tech, tIdx) => (
                       <span 
                         key={tIdx}
-                        className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md bg-zinc-900/5 dark:bg-white/5 border border-zinc-900/5 dark:border-white/5 text-zinc-500 dark:text-zinc-400"
+                        className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md bg-zinc-900/5 dark:bg-white/5 border border-border/50 text-foreground/60"
                       >
                         {tech}
                       </span>
@@ -149,13 +149,13 @@ export default function Projects() {
                         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                         className="border-t border-zinc-900/5 dark:border-white/5 pt-6 mt-4 space-y-3 overflow-hidden"
                       >
-                        <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500">
+                        <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/50">
                           Technical Highlights & Architecture
                         </h5>
-                        <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed text-left">
+                        <ul className="space-y-2 text-xs text-foreground/70 font-medium leading-relaxed text-left">
                           {project.highlights.map((highlight, hIdx) => (
                             <li key={hIdx} className="flex gap-2 items-start">
-                              <CheckCircle size={12} className="text-emerald-accent dark:text-[#52c49a] shrink-0 mt-0.5" />
+                              <CheckCircle size={12} className="text-accent shrink-0 mt-0.5" />
                               <span>{highlight}</span>
                             </li>
                           ))}
@@ -165,10 +165,10 @@ export default function Projects() {
                   </AnimatePresence>
 
                   {/* Card CTA Footer */}
-                  <div className="flex items-center justify-between border-t border-zinc-900/5 dark:border-white/5 pt-6 mt-6">
+                  <div className="flex items-center justify-between border-t border-border/50 pt-6 mt-6 relative z-10">
                     <button 
                       onClick={() => setExpandedProject(isExpanded ? null : project.title)}
-                      className="text-[10px] font-black uppercase tracking-widest text-terracotta dark:text-orange-500 hover:opacity-80 transition-opacity cursor-pointer"
+                      className="text-[10px] font-black uppercase tracking-widest text-accent hover:opacity-80 transition-opacity cursor-pointer"
                     >
                       {isExpanded ? 'Hide Architecture' : 'Examine Architecture'}
                     </button>
@@ -177,7 +177,7 @@ export default function Projects() {
                       href={project.githubLink || portfolioData.personalInfo.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-xl bg-zinc-900/5 dark:bg-white/5 border border-zinc-900/5 dark:border-white/5 text-zinc-500 dark:text-zinc-400 hover:border-terracotta/40 hover:text-terracotta dark:hover:text-orange-500 transition-all duration-300"
+                      className="p-2.5 rounded-xl bg-zinc-900/5 dark:bg-white/5 border border-border/50 text-foreground/60 hover:border-accent/40 hover:text-accent hover:shadow-[0_0_15px_rgba(37,99,235,0.2)] transition-all duration-300"
                     >
                       <Github size={14} />
                     </a>
