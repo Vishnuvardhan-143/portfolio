@@ -51,7 +51,7 @@ export default function ResumeModal({ isOpen, onClose }) {
         {/* Header Options Bar */}
         <div className="bg-zinc-950/2 dark:bg-white/2 border-b border-zinc-900/5 dark:border-white/5 px-6 py-4 flex items-center justify-between no-print shrink-0">
           <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-terracotta dark:bg-orange-500 animate-pulse" />
+            <div className="w-2.5 h-2.5 rounded-full bg-terracotta dark:bg-cyan-400 animate-pulse" />
             <h3 className="font-heading text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white">
               Professional Resume Preview
             </h3>
@@ -72,7 +72,7 @@ export default function ResumeModal({ isOpen, onClose }) {
             <a
               href="/resume.pdf"
               download="Vishnu_Annareddy_Resume.pdf"
-              className="px-4 py-2 rounded-xl bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal hover:bg-terracotta dark:hover:bg-orange-500 dark:hover:text-charcoal transition-all duration-300 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 cursor-pointer hover:-translate-y-0.5"
+              className="px-4 py-2 rounded-xl bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal hover:bg-terracotta dark:hover:bg-cyan-400 dark:hover:text-charcoal transition-all duration-300 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 cursor-pointer hover:-translate-y-0.5"
             >
               <Download size={12} />
               Download PDF
@@ -103,7 +103,7 @@ export default function ResumeModal({ isOpen, onClose }) {
                 <h1 className="font-heading text-3xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white">
                   {portfolioData.personalInfo.fullName}
                 </h1>
-                <p className="text-xs font-black uppercase tracking-widest text-terracotta dark:text-orange-500">
+                <p className="text-xs font-black uppercase tracking-widest text-terracotta dark:text-cyan-400">
                   {portfolioData.personalInfo.tagline}
                 </p>
                 
@@ -231,7 +231,7 @@ export default function ResumeModal({ isOpen, onClose }) {
                 <div key={idx} className="space-y-2">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
-                      {exp.role} · <span className="text-terracotta dark:text-orange-500">{exp.company}</span>
+                      {exp.role} · <span className="text-terracotta dark:text-cyan-400">{exp.company}</span>
                     </h3>
                     <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500">{exp.period}</span>
                   </div>
@@ -294,7 +294,7 @@ export default function ResumeModal({ isOpen, onClose }) {
                     <span className="text-[9px] font-bold text-zinc-400">2022 - 2026</span>
                   </div>
                   <p className="text-[10px] text-zinc-500">B.Tech in Computer Science & Engineering</p>
-                  <p className="font-black text-terracotta dark:text-orange-400 text-[10px] tracking-wider">CGPA: 9.19 / 10</p>
+                  <p className="font-black text-terracotta dark:text-cyan-400 text-[10px] tracking-wider">CGPA: 9.19 / 10</p>
                 </div>
 
                 {/* Intermediate */}
@@ -318,7 +318,7 @@ export default function ResumeModal({ isOpen, onClose }) {
                     GATE CSE 2025 Triumph
                   </h4>
                   <p className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400">
-                    Secured <span className="font-black text-terracotta dark:text-orange-500">All India Rank (AIR) 5005</span> with an absolute test score of <span className="font-bold">543</span> under nationwide competition.
+                    Secured <span className="font-black text-terracotta dark:text-cyan-400">All India Rank (AIR) 5005</span> with an absolute test score of <span className="font-bold">543</span> under nationwide competition.
                   </p>
                 </div>
               </div>

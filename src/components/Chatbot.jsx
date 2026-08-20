@@ -218,12 +218,12 @@ export default function Chatbot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed z-50 p-4 rounded-full bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal hover:bg-terracotta dark:hover:bg-orange-500 shadow-xl cursor-pointer hover:scale-105 transition-all duration-300 flex items-center gap-2 group pulse-badge"
+          className="fixed z-50 p-4 rounded-full bg-cyan-400 text-charcoal shadow-[0_0_25px_rgba(56,189,248,0.4)] cursor-pointer hover:scale-110 hover:bg-cyan-300 transition-all duration-300 flex items-center gap-2 group"
           style={{ position: 'fixed', bottom: '24px', right: '24px', left: 'auto' }}
           aria-label="Open Chatbot"
         >
-          <MessageSquare size={20} />
-          <span className="text-[10px] font-black uppercase tracking-wider hidden sm:inline max-w-0 group-hover:max-w-xs overflow-hidden transition-all duration-550">
+          <MessageSquare size={20} className="text-charcoal" />
+          <span className="text-[10px] font-black uppercase tracking-wider hidden sm:inline max-w-0 group-hover:max-w-xs overflow-hidden transition-all duration-550 text-charcoal">
             Ask Vishnu!
           </span>
         </button>
@@ -239,14 +239,14 @@ export default function Chatbot() {
           {/* Header */}
           <div className="bg-zinc-950/2 dark:bg-white/2 border-b border-zinc-900/5 dark:border-white/5 px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-terracotta/10 text-terracotta dark:text-orange-500 animate-pulse">
+              <div className="p-2 rounded-xl bg-cyan-400/10 text-cyan-400 dark:text-cyan-400 animate-pulse">
                 <Sparkles size={16} />
               </div>
               <div>
                 <h4 className="font-heading text-sm font-black uppercase tracking-tight text-zinc-900 dark:text-white flex items-center gap-1">
                   Vishnu AI
                 </h4>
-                <span className="text-[8px] font-black tracking-widest text-emerald-accent uppercase">
+                <span className="text-[8px] font-black tracking-widest text-cyan-400 uppercase">
                   Online Representative
                 </span>
               </div>
@@ -271,14 +271,14 @@ export default function Chatbot() {
                   }`}
                 >
                   <div className={`p-2 rounded-xl shrink-0 h-fit ${
-                    isBot ? 'bg-zinc-900/5 dark:bg-white/5 text-terracotta dark:text-orange-500' : 'bg-terracotta/10 text-terracotta'
+                    isBot ? 'bg-cyan-400/10 text-cyan-400' : 'bg-cyan-400/20 text-cyan-400'
                   }`}>
                     {isBot ? <Bot size={14} /> : <User size={14} />}
                   </div>
                   <div className={`p-4 rounded-2xl text-xs font-medium leading-relaxed ${
                     isBot 
                       ? 'bg-zinc-900/2 dark:bg-white/2 border border-zinc-900/5 dark:border-white/5 text-zinc-700 dark:text-zinc-300' 
-                      : 'bg-zinc-950 text-beige dark:bg-[#f5f1e8] dark:text-charcoal'
+                      : 'bg-zinc-950 text-beige dark:bg-zinc-900 dark:text-white border border-cyan-400/20'
                   } whitespace-pre-line`}>
                     {m.text}
                   </div>
@@ -289,13 +289,13 @@ export default function Chatbot() {
             {/* Premium Dynamic Typing Indicator */}
             {isTyping && (
               <div className="flex gap-3 max-w-[85%] self-start animate-pulse">
-                <div className="p-2 rounded-xl shrink-0 h-fit bg-zinc-900/5 dark:bg-white/5 text-terracotta dark:text-orange-500">
+                <div className="p-2 rounded-xl shrink-0 h-fit bg-cyan-400/10 text-cyan-400">
                   <Bot size={14} />
                 </div>
                 <div className="p-4 rounded-2xl bg-zinc-900/2 dark:bg-white/2 border border-zinc-900/5 dark:border-white/5 text-zinc-400 dark:text-zinc-500 flex items-center gap-1.5 py-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               </div>
             )}
@@ -309,7 +309,7 @@ export default function Chatbot() {
                 <button
                   key={s}
                   onClick={() => handleSend(s)}
-                  className="text-[8px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-md bg-zinc-900/5 dark:bg-white/5 border border-zinc-900/5 dark:border-white/5 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-900/10 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                  className="text-[8px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-md bg-zinc-900/5 dark:bg-white/5 border border-zinc-900/5 dark:border-white/5 text-zinc-500 dark:text-zinc-400 hover:bg-cyan-400/10 hover:text-cyan-400 hover:border-cyan-400/30 transition-colors cursor-pointer"
                 >
                   {s}
                 </button>
@@ -331,13 +331,13 @@ export default function Chatbot() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="Ask about GATE, Mphasis, projects..."
-                className="flex-1 px-4 py-3 bg-zinc-900/2 dark:bg-white/2 border border-zinc-900/10 dark:border-white/10 rounded-xl text-xs outline-none focus:border-terracotta dark:focus:border-orange-500 text-zinc-800 dark:text-[#f5f1e8] transition-colors"
+                className="flex-1 px-4 py-3 bg-zinc-900/2 dark:bg-white/2 border border-zinc-900/10 dark:border-white/10 rounded-xl text-xs outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 text-zinc-800 dark:text-[#f5f1e8] transition-colors"
               />
               <button
                 type="submit"
-                className="p-3 rounded-xl bg-zinc-900 text-beige dark:bg-[#f5f1e8] dark:text-charcoal hover:bg-terracotta dark:hover:bg-orange-500 dark:hover:text-charcoal transition-all duration-300 cursor-pointer"
+                className="p-3 rounded-xl bg-cyan-400 text-charcoal hover:bg-cyan-300 transition-all duration-300 cursor-pointer shadow-md"
               >
-                <Send size={14} />
+                <Send size={14} className="text-charcoal" />
               </button>
             </form>
           </div>

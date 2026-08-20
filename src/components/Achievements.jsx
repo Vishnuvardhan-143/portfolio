@@ -2,6 +2,8 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Award } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
+import RotatingText from './RotatingText';
+import TextType from './TextType';
 
 export default function Achievements() {
   const containerRef = useRef(null);
@@ -26,13 +28,38 @@ export default function Achievements() {
               Key Milestones
             </div>
             
-            <h2 className="font-heading text-4xl md:text-5xl font-bold uppercase tracking-tight leading-[1.05] text-zinc-900 dark:text-white">
-              Proven <span className="text-emerald-accent dark:text-[#52c49a] italic font-heading underline decoration-[3px] underline-offset-8">Track Record</span> & Impact.
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight leading-[1.1] text-zinc-900 dark:text-white min-h-[110px]">
+              <RotatingText
+                texts={[
+                  'Proven Track Record & Impact.',
+                  'Proven Systems & Execution.',
+                  'Proven Results & Recognition.'
+                ]}
+                auto={true}
+                rotationInterval={4500}
+                animatePresenceInitial={true}
+                staggerDuration={0.03}
+                staggerFrom="first"
+                initial={{ y: '100%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: '-120%', opacity: 0 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300, delay: 0.2 }}
+                splitLevelClassName="overflow-hidden pb-1 pr-3"
+              />
             </h2>
             
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed max-w-md pt-2">
-              A highly analytical track record demonstrating systems engineering excellence, competitive national accomplishments, secure banking microservice architectures, and robust cloud data transformations.
-            </p>
+            <div className="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed max-w-md pt-2 min-h-[80px]">
+              <TextType
+                text="A highly analytical track record demonstrating systems engineering excellence, competitive national accomplishments, secure banking microservice architectures, and robust cloud data transformations."
+                as="p"
+                typingSpeed={30}
+                initialDelay={1000}
+                loop={true}
+                pauseDuration={10000}
+                showCursor={true}
+                cursorCharacter="|"
+              />
+            </div>
           </div>
 
           {/* Right Column: Sticky Stacking Cards */}

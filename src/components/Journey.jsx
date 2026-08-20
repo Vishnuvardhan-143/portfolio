@@ -17,13 +17,13 @@ export default function Journey() {
         
         {/* Section Heading */}
         <div className="flex flex-col items-center gap-3 mb-20 text-center">
-          <span className="text-[10px] font-black uppercase tracking-[0.5em] text-terracotta dark:text-orange-500">
+          <span className="text-[10px] font-black uppercase tracking-[0.5em] text-terracotta dark:text-cyan-400">
             Professional Evolution
           </span>
           <h2 className="font-heading text-4xl md:text-5xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white">
             My Journey Timeline
           </h2>
-          <div className="w-12 h-1 bg-terracotta dark:bg-orange-500 mt-2 rounded-full" />
+          <div className="w-12 h-1 bg-terracotta dark:bg-cyan-400 mt-2 rounded-full" />
         </div>
 
         {/* Timeline Line */}
@@ -54,7 +54,7 @@ export default function Journey() {
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ delay: 0.15, type: "spring", stiffness: 200, damping: 15 }}
-                    className="absolute left-4 md:left-1/2 w-6 h-6 rounded-full bg-beige dark:bg-charcoal border-4 border-terracotta dark:border-orange-500 md:-translate-x-1/2 z-20 flex items-center justify-center"
+                    className="absolute left-4 md:left-1/2 w-6 h-6 rounded-full bg-beige dark:bg-charcoal border-4 border-terracotta dark:border-cyan-400 md:-translate-x-1/2 z-20 flex items-center justify-center"
                   >
                     <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-[#f5f1e8] animate-pulse" />
                   </motion.div>
@@ -94,7 +94,7 @@ export default function Journey() {
                         {item.role}
                       </h3>
                       
-                      <h4 className="text-sm font-bold text-terracotta dark:text-orange-400 mb-4">
+                      <h4 className="text-sm font-bold text-terracotta dark:text-cyan-400 mb-4">
                         {item.company}
                       </h4>
 

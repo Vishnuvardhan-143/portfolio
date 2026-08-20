@@ -1,17 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTime, useTransform } from 'framer-motion';
+import InfinityScrollShowcase from './InfinityScrollShowcase';
 
 // Orbiting Badge Component with scroll-driven expansion hooks
-function OrbitBadge({ item, idx, totalItems, radius, progress }) {
-  const angle = (idx * 360) / totalItems;
-  const targetX = Math.cos((angle * Math.PI) / 180) * radius;
-  const targetY = Math.sin((angle * Math.PI) / 180) * radius;
+function OrbitBadge({ item, idx, totalItems, radius, progress, time }) {
+  const timeAngle = useTransform(time, [0, 30000], [0, 360], { clamp: false });
+  const baseAngleDeg = (idx * 360) / totalItems;
 
-  // Scroll-linked transforms for expanding from center to orbit
-  const itemX = useTransform(progress, [0, 1], [0, targetX]);
-  const itemY = useTransform(progress, [0, 1], [0, targetY]);
-  const itemScale = useTransform(progress, [0, 0.65], [0, 1]);
-  const itemOpacity = useTransform(progress, [0, 0.45], [0, 1]);
+  // Dynamic radial expansion linked to scroll progress:
+  // Starts collapsed near center (0.25 * radius), expands to full radius, and pushes outward (1.55 * radius) as you scroll down!
+  const currentRadius = useTransform(progress, [0, 0.5, 1], [radius * 0.25, radius, radius * 1.55]);
+
+  const itemX = useTransform([currentRadius, timeAngle], ([r, tAngle]) => {
+    const rad = ((baseAngleDeg + tAngle) * Math.PI) / 180;
+    return Math.cos(rad) * r;
+  });
+
+  const itemY = useTransform([currentRadius, timeAngle], ([r, tAngle]) => {
+    const rad = ((baseAngleDeg + tAngle) * Math.PI) / 180;
+    return Math.sin(rad) * r;
+  });
+
+  const itemScale = useTransform(progress, [0, 0.35], [0.4, 1]);
+  const itemOpacity = useTransform(progress, [0, 0.2], [0, 1]);
 
   return (
     <motion.div
@@ -27,10 +38,8 @@ function OrbitBadge({ item, idx, totalItems, radius, progress }) {
         marginTop: '-28px',
       }}
     >
-      {/* Badge with Counter-rotation to remain upright */}
+      {/* Badge remains 100% upright at all times during orbit */}
       <motion.div
-        animate={{ rotate: -360 }}
-        transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
         className={`w-14 h-14 rounded-full border flex items-center justify-center text-xl shadow-lg pointer-events-auto cursor-help select-none ${item.color}`}
         title={item.name}
         whileHover={{ scale: 1.2, transition: { duration: 0.2 } }}
@@ -44,15 +53,16 @@ function OrbitBadge({ item, idx, totalItems, radius, progress }) {
 export default function Skills() {
   const [radius, setRadius] = useState(220);
   const containerRef = useRef(null);
+  const time = useTime();
 
-  // Scroll tracking for Orbit expansion
+  // Scroll tracking for Orbit expansion across full section scroll
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "center center"]
+    offset: ["start end", "end start"]
   });
 
-  // Smooth progress mapped to expansion
-  const progress = useTransform(scrollYProgress, [0.05, 0.85], [0, 1]);
+  // Continuous progress mapping: expands as you scroll down through the section!
+  const progress = useTransform(scrollYProgress, [0.1, 0.85], [0, 1]);
 
   // Responsive radius for Tech Orbit
   useEffect(() => {
@@ -107,7 +117,7 @@ export default function Skills() {
               <span className="marquee-text font-heading">
                 {skill}
               </span>
-              <span className="text-terracotta dark:text-orange-500 opacity-60">*</span>
+              <span className="text-terracotta dark:text-cyan-400 opacity-60">*</span>
             </React.Fragment>
           ))}
           {/* Second loop for seamless wrapping */}
@@ -116,7 +126,7 @@ export default function Skills() {
               <span className="marquee-text font-heading">
                 {skill}
               </span>
-              <span className="text-terracotta dark:text-orange-500 opacity-60">*</span>
+              <span className="text-terracotta dark:text-cyan-400 opacity-60">*</span>
             </React.Fragment>
           ))}
         </div>
@@ -134,12 +144,12 @@ export default function Skills() {
           
           <div className="absolute inset-0 rounded-full bg-radial-glow ambient-glow-light dark:ambient-glow-dark opacity-40 pointer-events-none" />
           
-          <span className="text-[9px] font-black uppercase tracking-[0.25em] text-terracotta dark:text-orange-400 mb-2">
+          <span className="text-[9px] font-black uppercase tracking-[0.25em] text-terracotta dark:text-cyan-400 mb-2">
             Skill Core
           </span>
           
           <h3 className="font-heading text-2xl md:text-3xl font-bold uppercase tracking-tight leading-none text-zinc-900 dark:text-white">
-            Empowering <span className="text-terracotta dark:text-orange-500 italic block font-heading">Every User</span>
+            Empowering <span className="text-terracotta dark:text-cyan-400 italic block font-heading">Every User</span>
           </h3>
           
           <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-4 max-w-[240px]">
@@ -148,11 +158,7 @@ export default function Skills() {
         </div>
 
         {/* Orbiting Elements Container */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
-        >
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           {orbitItems.map((item, idx) => (
             <OrbitBadge
               key={idx}
@@ -161,9 +167,10 @@ export default function Skills() {
               totalItems={orbitItems.length}
               radius={radius}
               progress={progress}
+              time={time}
             />
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* Extended Toolkit Grid Selector */}
@@ -174,54 +181,17 @@ export default function Skills() {
         </div>
       </div>
 
-      {/* EXTENDED TOOLKIT GRID (Matching Reference Screenshot) */}
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16 lg:px-20 relative z-10 w-full flex flex-col items-center justify-center mt-32 mb-24">
-        
-        <div className="flex flex-col items-center gap-4 mb-16 text-center">
-          <div className="w-10 h-1 bg-terracotta dark:bg-orange-500 rounded-full" />
+      {/* EXTENDED TOOLKIT (3D Infinity Scroll Showcase) */}
+      <div className="max-w-[1440px] mx-auto px-6 md:px-16 lg:px-20 relative z-10 w-full flex flex-col items-center justify-center mt-24 mb-20">
+        <div className="flex flex-col items-center gap-4 mb-10 text-center">
+          <div className="w-10 h-1 bg-terracotta dark:bg-cyan-400 rounded-full" />
           <span className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-400 dark:text-zinc-500">
             Extended Toolkit
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto w-full">
-          {[
-            { name: "JavaScript", icon: "JS", bg: "bg-yellow-400 text-black", border: "border-yellow-400/20" },
-            { name: "TypeScript", icon: "TS", bg: "bg-blue-500 text-white", border: "border-blue-500/20" },
-            { name: "Express.js", icon: "ex", bg: "bg-zinc-800 text-white", border: "border-zinc-500/20" },
-            { name: "Strapi", icon: "S", bg: "bg-indigo-500 text-white", border: "border-indigo-500/20" },
-            { name: "Supabase", icon: "S", bg: "bg-emerald-500 text-white", border: "border-emerald-500/20" },
-            { name: "OpenAI", icon: "O", bg: "bg-white text-black", border: "border-white/20" },
-            { name: "Git", icon: "Git", bg: "bg-orange-600 text-white", border: "border-orange-600/20" },
-            { name: "Linux", icon: "L", bg: "bg-yellow-500 text-black", border: "border-yellow-500/20" },
-            { name: "GCP", icon: "GCP", bg: "bg-blue-400 text-white", border: "border-blue-400/20" },
-            { name: "Postman", icon: "PM", bg: "bg-orange-500 text-white", border: "border-orange-500/20" }
-          ].map((tool, idx) => (
-            <motion.div 
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.05, duration: 0.5 }}
-              whileHover={{ y: -5 }}
-              className="group flex flex-col items-center justify-center p-8 rounded-3xl bg-zinc-900/5 dark:bg-[#0c0c0c] border border-zinc-900/10 dark:border-white/5 hover:border-zinc-900/20 dark:hover:border-white/10 transition-all duration-300 relative overflow-hidden"
-            >
-              {/* Subtle hover glow matching the tool color */}
-              <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 ${tool.bg.split(' ')[0]}`} />
-              
-              {/* Icon Container */}
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg mb-6 shadow-lg ${tool.bg}`}>
-                {tool.icon}
-              </div>
-
-              {/* Dotted separator */}
-              <div className="w-6 border-t border-dashed border-zinc-400/50 mb-3" />
-              
-              <span className="text-[9px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
-                {tool.name}
-              </span>
-            </motion.div>
-          ))}
+        <div className="w-full h-[520px] md:h-[620px] relative overflow-hidden rounded-3xl border border-zinc-900/10 dark:border-white/5 bg-[#07070a]/80 backdrop-blur-xl shadow-2xl">
+          <InfinityScrollShowcase speed={0.85} radius={7.5} weight={4} impact={1.2} />
         </div>
       </div>
     </section>

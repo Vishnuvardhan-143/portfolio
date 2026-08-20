@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { ArrowUpRight, Menu, Moon, Sun, X } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
+import PillNav from './PillNav';
 
 export default function Header({ onViewResume, isDark, toggleTheme }) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const [activeSection, setActiveSection] = useState('');
 
   const navLinks = [
@@ -48,90 +47,35 @@ export default function Header({ onViewResume, isDark, toggleTheme }) {
 
 
   return (
-    <header className="fixed left-0 top-4 z-50 w-full px-4 md:px-8">
+    <header className="fixed left-0 top-4 z-50 w-full px-4 md:px-8 pointer-events-none">
       <div
         className={`mx-auto flex max-w-[1420px] items-center justify-between transition-all duration-300 ${
           isScrolled ? 'translate-y-0' : ''
         }`}
       >
-        <a
-          href="#home"
-          className="liquid-glass grid h-12 w-12 place-items-center rounded-full font-heading text-2xl font-black italic text-foreground"
-          aria-label="Back to home"
-        >
-          {portfolioData.personalInfo.nickname.slice(0, 1).toLowerCase()}
-        </a>
-
-        <nav className="liquid-glass hidden items-center rounded-full p-1.5 md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={`rounded-full px-3 py-2 text-sm font-medium transition-colors ${
-                activeSection === link.href.substring(1)
-                  ? 'bg-accent/20 text-accent shadow-sm'
-                  : 'text-foreground/80 hover:bg-accent/10 hover:text-accent'
-              }`}
-            >
-              {link.name}
-            </a>
-          ))}
-          <button
-            onClick={onViewResume}
-            className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-transform hover:scale-[1.02]"
-          >
-            Resume
-            <ArrowUpRight className="h-4 w-4" />
-          </button>
-        </nav>
-
-        <button
-          onClick={toggleTheme}
-          className="hidden h-12 w-12 items-center justify-center rounded-full text-foreground/60 hover:text-accent hover:bg-accent/10 transition-colors md:flex"
-          aria-label="Toggle theme"
-        >
-          {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-        </button>
-
-        <button
-          onClick={() => setMobileMenuOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-          className="liquid-glass grid h-12 w-12 place-items-center rounded-full text-foreground md:hidden hover:text-accent"
-        >
-          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
-
-      {mobileMenuOpen && (
-        <div className="liquid-glass-strong mx-4 mt-4 rounded-[1.5rem] p-5 md:hidden">
-          <nav className="flex flex-col gap-2">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`rounded-2xl px-4 py-3 text-base font-semibold transition-colors ${
-                  activeSection === link.href.substring(1)
-                    ? 'bg-accent/20 text-accent'
-                    : 'text-foreground/80 hover:bg-accent/10 hover:text-accent'
-                }`}
+        <div className="pointer-events-auto w-full">
+          <PillNav
+            logo={portfolioData.personalInfo.nickname.slice(0, 1).toLowerCase()}
+            items={navLinks.map(link => ({ label: link.name, href: link.href }))}
+            activeHref={activeSection ? `#${activeSection}` : ''}
+            className="border-none"
+            pillColor="transparent"
+            baseColor="#fff"
+            pillTextColor="rgba(255,255,255,0.9)"
+            hoveredPillTextColor="#000"
+            onViewResume={onViewResume}
+            rightContent={
+              <button
+                onClick={toggleTheme}
+                className="h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all flex liquid-glass shadow-md"
+                aria-label="Toggle theme"
               >
-                {link.name}
-              </a>
-            ))}
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onViewResume();
-              }}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]"
-            >
-              View Resume
-              <ArrowUpRight className="h-4 w-4" />
-            </button>
-          </nav>
+                {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
+            }
+          />
         </div>
-      )}
+      </div>
     </header>
   );
 }
